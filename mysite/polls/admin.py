@@ -24,12 +24,15 @@ class QuestionAdmin(admin.ModelAdmin):
 
     def download_csv(self, request, queryset):
         print 'hi'
+        print queryset
+        print self.list_display
         f = open('questions.csv', 'wb')
         writer = csv.writer(f)
-        writer.writerow(["id", "question_text"])
+        writer.writerow(self.list_display)
      
         for q in queryset:
-            writer.writerow([q.id, q.question_text])
+            print q.was_published_recently == True
+            writer.writerow([q.id, q.question_text, q.was_published_recently()])
      
         f.close()
      

@@ -1,3 +1,3 @@
-id,question_text
-2,Second Question
-1,What's up Doc?
+question_text,pub_date,was_published_recently
+2,Second Question,False
+1,What's up Doc?,False
