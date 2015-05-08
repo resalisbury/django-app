@@ -19,12 +19,12 @@ def get_queryset(self):
 
 class DetailView(generic.DetailView):
     model = Question
-	template_name = 'polls/detail.html'
+    template_name = 'polls/detail.html'
 
 
 class ResultsView(generic.DetailView):
     model = Question
-	template_name = 'polls/results.html'
+    template_name = 'polls/results.html'
 
 
 def vote(request, question_id):
@@ -45,6 +45,7 @@ else:
     # user hits the Back button.
     return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
 
+
 def export(request):
     questions = Question.objects.all()
 response = HttpResponse(content_type='text/csv')
@@ -56,5 +57,6 @@ for q in questions:
     writer.writerow([q.id, q.question_text])
     return response
 
+
 def question_from_slug(request, slug):
-	question = get_object_or_404(Question, slug = slug)
+    question = get_object_or_404(Question, slug=slug)
