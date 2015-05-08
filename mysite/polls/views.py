@@ -55,7 +55,3 @@ def export(request):
     for q in questions:
         writer.writerow([q.id, q.question_text])
     return response
-
-
-def question_from_slug(request, slug):
-    question = get_object_or_404(Question, slug=slug)
