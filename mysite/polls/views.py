@@ -11,10 +11,9 @@ class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'questions'
 
-
-def get_queryset(self):
-    """Return the last five published questions."""
-    return Question.objects.order_by('-pub_date')[:5]
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by('-pub_date')[:5]
 
 
 class DetailView(generic.DetailView):
@@ -29,32 +28,32 @@ class ResultsView(generic.DetailView):
 
 def vote(request, question_id):
     p = get_object_or_404(Question, pk=question_id)
-try:
-    selected_choice = p.choice_set.get(pk=request.POST['choice'])
-except (KeyError, Choice.DoesNotExist):
-    # Redisplay the question voting form.
-    return render(request, 'polls/detail.html', {
-        'question': p,
-        'error_message': "You didn't select a choice.",
-    })
-else:
-    selected_choice.votes += 1
-    selected_choice.save()
-    # Always return an HttpResponseRedirect after successfully dealing
-    # with POST data. This prevents data from being posted twice if a
-    # user hits the Back button.
-    return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+    try:
+        selected_choice = p.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(request, 'polls/detail.html', {
+            'question': p,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
 
 
 def export(request):
     questions = Question.objects.all()
-response = HttpResponse(content_type='text/csv')
-response['Content-Disposition'] = 'attachment; filename="polls.csv"'
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="polls.csv"'
 
-writer = csv.writer(response)
-writer.writerow(['id', 'question_text'])
-for q in questions:
-    writer.writerow([q.id, q.question_text])
+    writer = csv.writer(response)
+    writer.writerow(['id', 'question_text'])
+    for q in questions:
+        writer.writerow([q.id, q.question_text])
     return response
 
 
