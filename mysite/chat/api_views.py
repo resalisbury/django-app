@@ -1,5 +1,7 @@
 import json
 
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -22,7 +24,10 @@ class ChatDetail(generics.RetrieveAPIView):
 class ChatModule(APIView):
 
     def get(self, request, guid, version, format=None):
-        chat = ChatJSON.objects.get(version=float(version))
+        try:
+            chat = ChatJSON.objects.get(version=float(version))
+        except ChatJSON.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         script = chat.script
 
         with open(script.path, 'r') as data_file:
