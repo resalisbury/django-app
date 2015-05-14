@@ -6,4 +6,4 @@ class ChatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChatJSON
-        fields = ('id', 'version', 'script')
+        fields = ('id', 'version', 'script_as_json')
