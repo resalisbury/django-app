@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'rest_framework',
     'polls',
+    'chat',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,9 +86,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-
-
