@@ -26,14 +26,17 @@ class ChatModule(APIView):
     def get(self, request, guid, version, format=None):
         try:
             chat = ChatJSON.objects.get(version=float(version))
+            script = chat.script
         except ChatJSON.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        script = chat.script
 
         with open(script.path, 'r') as data_file:
             data = json.load(data_file)
 
-        response = self.get_guid(guid, data)
+        try:
+            response = self.get_guid(guid, data)
+        except KeyError:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         return Response(response)
 
@@ -42,6 +45,7 @@ class ChatModule(APIView):
         for step in steps:
             if step['guid'] == guid:
                 return step
+        raise KeyError
 
     def get_steps(self, modules):
         steps = []
